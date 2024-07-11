@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-</head>
-<body>
+{{#extends 'layouts/main'}}
+{{#content 'body'}}
     <h1>Bienvenido a nuestro Ecommerce</h1>
     {{#if user}}
         <p>Hola, {{user.name}}!</p>
@@ -13,5 +8,4 @@
         <a href="/login">Iniciar sesión</a>
         <a href="/register">Registrarse</a>
     {{/if}}
-</body>
-</html>
+{{/content}}

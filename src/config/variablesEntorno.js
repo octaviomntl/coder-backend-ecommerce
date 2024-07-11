@@ -2,7 +2,8 @@ require('dotenv').config();
 
 module.exports = {
     port: process.env.PORT || 3000,
-    mongoUri: process.env.MONGO_URI,
-    emailUser: process.env.EMAIL_USER,
-    emailPass: process.env.EMAIL_PASS,
+    mongodbUri: process.env.MONGO_URI,
+    emailUser: process.env.NODEMAILER_USER,
+    emailPass: process.env.NODEMAILER_PASS,
+    secretKey: process.env.SECRET_KEY 
 };

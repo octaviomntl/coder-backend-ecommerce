@@ -1,12 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const usersController = require('../controllers/users.controller');
+const userController = require('../controllers/users.controller');
 const { isAdmin } = require('../middleware/authorization');
 
-// Obtener todos los usuarios
-router.get('/', usersController.getUsers);
+// Ruta para obtener todos los usuarios y renderizar la vista de gestión de usuarios
+router.get('/', isAdmin, userController.getAllUsers);
 
-// Eliminar usuarios inactivos (solo accesible por el administrador)
-router.delete('/', isAdmin, usersController.deleteInactiveUsers);
+// Ruta para eliminar usuarios inactivos
+router.delete('/', isAdmin, userController.deleteInactiveUsers);
+
+// Ruta para actualizar rol de un usuario
+router.post('/:id', isAdmin, userController.updateUserRole);
+
+// Ruta para eliminar un usuario
+router.post('/delete/:id', isAdmin, userController.deleteUser);
 
 module.exports = router;

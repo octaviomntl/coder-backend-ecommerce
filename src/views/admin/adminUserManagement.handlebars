@@ -1,34 +1,38 @@
-<h1>Gestión de Usuarios</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each users}}
-        <tr>
-            <td>{{this.name}}</td>
-            <td>{{this.email}}</td>
-            <td>{{this.role}}</td>
-            <td>
-                <form action="/admin/users/{{this._id}}" method="post">
-                    <select name="role">
-                        <option value="user" {{#ifCond this.role '==' 'user'}}selected{{/ifCond}}>Usuario</option>
-                        <option value="admin" {{#ifCond this.role '==' 'admin'}}selected{{/ifCond}}>Administrador</option>
-                        <option value="premium" {{#ifCond this.role '==' 'premium'}}selected{{/ifCond}}>Premium</option>
-                    </select>
-                    <button type="submit">Modificar</button>
-                </form>
-                <form action="/admin/users/delete/{{this._id}}" method="post">
-                    <button type="submit">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-<a href="/admin">Volver al Panel</a>
+{{#extends 'layouts/main'}}
+{{#content 'body'}}
+    <h1>Gestión de Usuarios</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td>{{this.nombre}}</td>
+                <td>{{this.correo}}</td>
+                <td>
+                    <form action="/admin/users/{{this._id}}" method="post">
+                        <select name="rol">
+                            <option value="user" {{#ifCond this.rol '==' 'user'}}selected{{/ifCond}}>Usuario</option>
+                            <option value="admin" {{#ifCond this.rol '==' 'admin'}}selected{{/ifCond}}>Administrador</option>
+                            <option value="premium" {{#ifCond this.rol '==' 'premium'}}selected{{/ifCond}}>Premium</option>
+                        </select>
+                        <button type="submit">Modificar</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/admin/users/delete/{{this._id}}" method="post">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <a href="/admin">Volver al Panel</a>
+{{/content}}
