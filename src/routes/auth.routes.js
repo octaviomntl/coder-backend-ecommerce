@@ -23,7 +23,7 @@ router.get('/register', (req, res) => {
 
 // Ruta de registro (POST)
 router.post('/register', async (req, res) => {
-    const { nombre, email, password } = req.body;
+    const { name, email, password } = req.body;
 
     // Validar que el correo no esté ya registrado
     const existingUser = await User.findOne({ email });
@@ -37,7 +37,7 @@ router.post('/register', async (req, res) => {
 
     // Crear nuevo usuario
     const newUser = new User({
-        nombre,
+        name,
         email,
         password: hashedPassword,
         role: 'user' // Rol por defecto
