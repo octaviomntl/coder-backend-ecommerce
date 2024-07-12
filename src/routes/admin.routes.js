@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admin.controller');
-const { isAdmin } = require('../middleware/authorization');
+const { isAdmin } = require('../middleware/authMiddleware');
 
 // Vista de administración
 router.get('/', isAdmin, adminController.getAdminDashboard);
