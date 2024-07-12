@@ -1,11 +1,9 @@
-{{#extends 'layouts/main'}}
-{{#content 'body'}}
-    <h1>Bienvenido a nuestro Ecommerce</h1>
-    {{#if user}}
-        <p>Hola, {{user.name}}!</p>
-        <a href="/logout">Cerrar sesión</a>
-    {{else}}
-        <a href="/login">Iniciar sesión</a>
-        <a href="/register">Registrarse</a>
-    {{/if}}
-{{/content}}
+
+<h1>Bienvenido a nuestro Ecommerce</h1>
+{{#if user}}
+    <p>Hola, {{user.name}}!</p>
+    <a href="/logout">Cerrar sesión</a>
+{{else}}
+    <a href="/login">Iniciar sesión</a>
+    <a href="/register">Registrarse</a>
+{{/if}}

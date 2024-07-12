@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/users.controller');
-const { isAdmin } = require('../middleware/authorization');
+const { isAdmin } = require('../middleware/authMiddleware');
 
 // Ruta para obtener todos los usuarios y renderizar la vista de gestión de usuarios
 router.get('/', isAdmin, userController.getAllUsers);

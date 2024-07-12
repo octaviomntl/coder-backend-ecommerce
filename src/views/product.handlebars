@@ -1,11 +1,9 @@
-{{#extends 'layouts/main'}}
-{{#content 'body'}}
-    <h1>{{product.nombre}}</h1>
-    <p>{{product.descripcion}}</p>
-    <p>Precio: {{product.precio}}</p>
-    <form action="/cart/add/{{product._id}}" method="post">
-        <label for="quantity">Cantidad:</label>
-        <input type="number" id="quantity" name="quantity" min="1" value="1">
-        <button type="submit">Agregar al Carrito</button>
-    </form>
-{{/content}}
+
+<h1>{{product.nombre}}</h1>
+<p>{{product.descripcion}}</p>
+<p>Precio: {{product.precio}}</p>
+<form action="/cart/add/{{product._id}}" method="post">
+    <label for="quantity">Cantidad:</label>
+    <input type="number" id="quantity" name="quantity" min="1" value="1">
+    <button type="submit">Agregar al Carrito</button>
+</form>

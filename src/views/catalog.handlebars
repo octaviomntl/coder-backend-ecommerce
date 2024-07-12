@@ -1,15 +1,12 @@
-{{#extends 'layouts/main'}}
-{{#content 'body'}}
-    <h1>Catálogo de Productos</h1>
-    <ul>
-        {{#each products}}
-            <li>{{this.name}} - {{this.price}}</li>
-            <form action="/api/carts/add" method="post">
-                <input type="hidden" name="productId" value="{{this._id}}">
-                <input type="number" name="quantity" value="1" min="1">
-                <button type="submit">Agregar al Carrito</button>
-            </form>
-        {{/each}}
-    </ul>
-    <a href="/cart">Ver Carrito</a>
-{{/content}}
+<h1>Catálogo de Productos</h1>
+<ul>
+    {{#each products}}
+        <li>{{this.name}} - {{this.price}}</li>
+        <form action="/api/carts/add" method="post">
+            <input type="hidden" name="productId" value="{{this._id}}">
+            <input type="number" name="quantity" value="1" min="1">
+            <button type="submit">Agregar al Carrito</button>
+        </form>
+    {{/each}}
+</ul>
+<a href="/cart">Ver Carrito</a>

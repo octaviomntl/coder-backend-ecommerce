@@ -1,13 +1,11 @@
-{{#extends 'layouts/main'}}
-{{#content 'body'}}
-    <h1>Confirmación de Compra</h1>
-    <p>Gracias por tu compra, {{user.nombre}}. Tu pedido ha sido recibido y está siendo procesado.</p>
-    <p>Detalles del Pedido:</p>
-    <ul>
-        {{#each order.items}}
-        <li>{{this.producto.nombre}} - Cantidad: {{this.cantidad}} - Precio: {{this.total}}</li>
-        {{/each}}
-    </ul>
-    <p>Total: {{order.total}}</p>
-    <a href="/products">Seguir Comprando</a>
-{{/content}}
+
+<h1>Confirmación de Compra</h1>
+<p>Gracias por tu compra, {{user.nombre}}. Tu pedido ha sido recibido y está siendo procesado.</p>
+<p>Detalles del Pedido:</p>
+<ul>
+    {{#each order.items}}
+    <li>{{this.producto.nombre}} - Cantidad: {{this.cantidad}} - Precio: {{this.total}}</li>
+    {{/each}}
+</ul>
+<p>Total: {{order.total}}</p>
+<a href="/products">Seguir Comprando</a>
