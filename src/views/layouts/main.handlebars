@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce App</title>
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Asegúrate de que la ruta sea correcta -->
 </head>
 <body>
-    {{{body}}}
+    <header>
+        <h1>Bienvenido {{#if user}}{{user.name}}{{else}}Invitado{{/if}}</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/products">Productos</a></li>
+                <li><a href="/cart">Carrito</a></li>
+                {{#if user}}
+                    <li><a href="/auth/logout">Cerrar sesión</a></li>
+                {{else}}
+                    <li><a href="/auth/login">Iniciar sesión</a></li>
+                    <li><a href="/auth/register">Registrarse</a></li>
+                {{/if}}
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {{{body}}}
+    </main>
 </body>
 </html>

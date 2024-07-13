@@ -1,10 +1,15 @@
-
-    <h1>Productos</h1>
-    <ul>
-        {{#each products}}
-        <li>
-            <a href="/product/{{this._id}}">{{this.nombre}}</a>
-            <p>Precio: {{this.precio}}</p>
-        </li>
-        {{/each}}
-    </ul>
+<h1>Productos</h1>
+<ul>
+    {{#each products}}
+    <li>
+        <a href="/product/{{_id}}">{{name}}</a>
+        <p>Descripción: {{description}}</p>
+        <p>Precio: {{price}}</p>
+        <form action="/cart/add" method="POST">
+            <input type="hidden" name="productId" value="{{_id}}">
+            <input type="number" name="quantity" value="1" min="1">
+            <button type="submit">Añadir al carrito</button>
+        </form>
+    </li>
+    {{/each}}
+</ul>

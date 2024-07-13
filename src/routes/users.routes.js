@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/users.controller');
 const { isAdmin } = require('../middleware/authMiddleware');
 
-// Ruta para obtener todos los usuarios y renderizar la vista de gestión de usuarios
+// Ruta para obtener todos los usuarios 
 router.get('/', isAdmin, userController.getAllUsers);
 
 // Ruta para eliminar usuarios inactivos
