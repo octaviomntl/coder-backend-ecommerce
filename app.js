@@ -14,6 +14,11 @@ const helpers = require('./src/helpers/handlebars-helpers');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Conexión a MongoDB
+mongoose.connect(config.mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Conectado a MongoDB'))
+  .catch(err => console.error('Error al conectar a MongoDB:', err));
+
 // Configurar el motor de vistas
 app.engine('handlebars', engine({
   helpers: helpers,
@@ -22,13 +27,7 @@ app.engine('handlebars', engine({
     allowProtoPropertiesByDefault: true,
     allowProtoMethodsByDefault: true,
   },
-  helpers: {
-      getProtoProperty: function(obj, prop) {
-          return obj[prop];
-      }
-  }
-}),
-);
+}));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, './src/views'));
 
@@ -47,7 +46,6 @@ app.use(session({
   }
 }));
 
-
 // Inicialización de Passport y sesión
 app.use(passport.initialize());
 app.use(passport.session());
@@ -55,19 +53,22 @@ app.use(passport.session());
 // Configurar express-flash
 app.use(flash());
 
-// Conexión a MongoDB
-mongoose.connect(config.mongodbUri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch(err => console.error('Error al conectar a MongoDB:', err));
+// Middleware para manejar datos del usuario en las vistas
+app.use((req, res, next) => {
+  res.locals.user = req.user;  
+  res.locals.successMessage = req.flash('success');  
+  res.locals.errorMessage = req.flash('error');  
+  next();
+});
 
-// Rutas y Middleware
-app.use('/', require('./src/routes/auth.routes')); // Ajusta la ruta según tu estructura
+app.use('/', require('./src/routes/auth.routes')); 
 app.use('/admin', isAdmin, require('./src/routes/admin.routes'));
-app.use('/api/carts', isUser, require('./src/routes/carts.routes')); // Asegúrate de que la ruta esté registrada
+app.use('/api/carts', isUser, require('./src/routes/carts.routes')); 
 app.use('/products', require('./src/routes/products.routes'));
 app.use('/users', require('./src/routes/users.routes'));
 app.use('/cart', isUser, require('./src/routes/carts.routes'));
 app.use('/auth', require('./src/routes/auth.routes'));
+app.use('/orders', isUser, require('./src/routes/orders.routes'));  
 
 // Ruta de inicio
 app.get('/', (req, res) => {
@@ -79,27 +80,7 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
-// Ruta de inicio de sesión (POST)
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/auth/login',
-  failureFlash: true,
-  successMessage: 'Has iniciado sesión con éxito'  
-}), (req, res) => {
-  console.log('User authenticated:', req.user);  
-});
-
-// Ruta de logout
-app.get('/logout', (req, res) => {
-  req.logout(err => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/login');
-  });
-});
-
-// Manejo datos del usuario en las vistas
+// Manejo de datos del usuario en las vistas
 app.use((req, res, next) => {
   res.locals.user = req.user;
   next();

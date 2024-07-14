@@ -1,22 +1,25 @@
-const isLoggedIn = (req, res, next) => {
+// Middleware para verificar si el usuario está autenticado
+function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect('/login');
-};
+  res.redirect('/auth/login');
+}
 
-const isAdmin = (req, res, next) => {
-  if (req.isAuthenticated() && req.user.role === 'admin') {
+// Middleware para verificar si el usuario es admin
+function isAdmin(req, res, next) {
+  if (req.user && req.user.role === 'admin') {
     return next();
   }
-  res.redirect('/login');
-};
+  res.redirect('/');
+}
 
-const isUser = (req, res, next) => {
-  if (req.isAuthenticated() && req.user.role === 'user') {
+// Middleware para verificar si el usuario es un usuario registrado
+function isUser(req, res, next) {
+  if (req.user) {
     return next();
   }
-  res.redirect('/login');
-};
+  res.redirect('/auth/login');
+}
 
 module.exports = { isLoggedIn, isAdmin, isUser };

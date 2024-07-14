@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../config/passport');
-const User = require('../models/user.model'); // Asegúrate de que esta ruta sea correcta
+const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
-const flash = require('express-flash');
 
 // Ruta de inicio de sesión (GET)
 router.get('/login', (req, res) => {
@@ -14,7 +13,8 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/auth/login',
-    failureFlash: true
+    failureFlash: true,
+    successFlash: 'Has iniciado sesión con éxito'  
 }));
 
 // Ruta de registro (GET)
@@ -53,14 +53,16 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Ruta de cierre de sesión (GET)
+// Ruta de logout
 router.get('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        res.redirect('/auth/login');
+    req.logout(err => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/auth/login');
     });
-});
+  });
+  
+  module.exports = router;
 
 module.exports = router;

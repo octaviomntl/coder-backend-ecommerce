@@ -1,0 +1,28 @@
+{{!-- views/orders.handlebars --}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ordenes</title>
+</head>
+<body>
+    <h1>Tus órdenes</h1>
+    {{#if orders.length}}
+        <ul>
+            {{#each orders}}
+                <li>
+                    Orden ID: {{this._id}}
+                    <ul>
+                        Productos:
+                        {{#each this.items}}
+                            <li>{{this.product.name}} - Cantidad: {{this.quantity}}</li>
+                        {{/each}}
+                    </ul>
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>No tienes órdenes aún.</p>
+    {{/if}}
+</body>
+</html>
