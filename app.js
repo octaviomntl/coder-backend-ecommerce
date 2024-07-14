@@ -10,6 +10,9 @@ const passport = require('./src/config/passport');
 const { isLoggedIn, isAdmin, isUser } = require('./src/middleware/authMiddleware');
 const config = require('./src/config/variablesEntorno');
 const helpers = require('./src/helpers/handlebars-helpers');
+const methodOverride = require('method-override');
+const purchaseRestriction = require('./src/middleware/purchaseRestriction');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,6 +26,7 @@ mongoose.connect(config.mongodbUri, { useNewUrlParser: true, useUnifiedTopology:
 app.engine('handlebars', engine({
   helpers: helpers,
   defaultLayout: 'main',
+  layoutsDir: path.join(__dirname, './src/views/layouts'),
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
     allowProtoMethodsByDefault: true,
@@ -34,6 +38,10 @@ app.set('views', path.join(__dirname, './src/views'));
 // Middleware para parsear el cuerpo de la solicitud
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Middleware para manejar métodos HTTP extendidos
+app.use(methodOverride('_method'));
+
 
 // Configurar sesiones
 app.use(session({
@@ -61,18 +69,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/', require('./src/routes/auth.routes')); 
-app.use('/admin', isAdmin, require('./src/routes/admin.routes'));
-app.use('/api/carts', isUser, require('./src/routes/carts.routes')); 
-app.use('/products', require('./src/routes/products.routes'));
-app.use('/users', require('./src/routes/users.routes'));
-app.use('/cart', isUser, require('./src/routes/carts.routes'));
+// Definir rutas
+app.use('/api/users', require('./src/routes/users.routes'));
 app.use('/auth', require('./src/routes/auth.routes'));
-app.use('/orders', isUser, require('./src/routes/orders.routes'));  
+app.use('/admin', isAdmin, require('./src/routes/admin.routes'));
+app.use('/api/carts', isUser, isAdmin, require('./src/routes/carts.routes'));
+app.use('/products', isAdmin, require('./src/routes/products.routes'));
+app.use('/users', require('./src/routes/users.routes'));
+app.use('/cart', isUser, isAdmin, require('./src/routes/carts.routes'));
+app.use('/orders', isUser, isAdmin, require('./src/routes/orders.routes'));
 
 // Ruta de inicio
 app.get('/', (req, res) => {
-  res.render('home'); 
+  res.render('home');
 });
 
 // Ruta de login (GET)
@@ -83,8 +92,10 @@ app.get('/login', (req, res) => {
 // Manejo de datos del usuario en las vistas
 app.use((req, res, next) => {
   res.locals.user = req.user;
+  res.locals.currentUser = req.session.currentUser;
   next();
 });
+
 
 // Iniciar el servidor
 app.listen(port, () => {

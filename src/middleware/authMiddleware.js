@@ -1,7 +1,7 @@
 // Middleware para verificar si el usuario está autenticado
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
-    return next();
+      return next();
   }
   res.redirect('/auth/login');
 }
@@ -9,15 +9,16 @@ function isLoggedIn(req, res, next) {
 // Middleware para verificar si el usuario es admin
 function isAdmin(req, res, next) {
   if (req.user && req.user.role === 'admin') {
-    return next();
+      return next();
   }
-  res.redirect('/');
+  req.flash('error', 'No tienes permiso para acceder a esta página.');
+  res.redirect('/login');
 }
 
 // Middleware para verificar si el usuario es un usuario registrado
 function isUser(req, res, next) {
   if (req.user) {
-    return next();
+      return next();
   }
   res.redirect('/auth/login');
 }

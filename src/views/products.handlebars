@@ -1,15 +1,38 @@
-<h1>Productos</h1>
-<ul>
-    {{#each products}}
-    <li>
-        <a href="/product/{{_id}}">{{name}}</a>
-        <p>Descripción: {{description}}</p>
-        <p>Precio: {{price}}</p>
-        <form action="/cart/add" method="POST">
-            <input type="hidden" name="productId" value="{{_id}}">
-            <input type="number" name="quantity" value="1" min="1">
-            <button type="submit">Añadir al carrito</button>
-        </form>
-    </li>
-    {{/each}}
-</ul>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<body>
+    <h1>Productos</h1>
+    {{#if currentUser}}
+        <p>Rol: {{currentUser.role}}</p>
+    {{/if}}
+    <ul>
+        {{#each products}}
+        <li>
+            <p href="/product/{{_id}}">{{name}}</p>
+            <p>Descripción: {{description}}</p>
+            <p>Precio: {{price}}</p>
+            {{#if owner}}
+                <p>Propietario: {{owner.name}}</p>
+            {{/if}}
+            {{#ifCond ../currentUser.role '===' 'premium'}}
+                {{#ifCond ../currentUser._id '===' owner._id}}
+                    <form action="/products/delete/{{_id}}" method="POST">
+                        <button type="submit">Eliminar Producto</button>
+                    </form>
+                {{/ifCond}}
+            {{/ifCond}}
+            <form action="/cart/add" method="POST">
+                <input type="hidden" name="productId" value="{{_id}}">
+                <input type="number" name="quantity" value="1" min="1">
+                <button type="submit">Añadir al carrito</button>
+            </form>
+        </li>
+        {{/each}}
+    </ul>
+</body>
+</html>

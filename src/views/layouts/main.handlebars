@@ -16,6 +16,7 @@
                 <li><a href="/cart">Carrito</a></li>
                 {{#if user}}
                     <li><a href="/auth/logout">Cerrar sesión</a></li>
+                    <p>Rol: {{currentUser.role}}</p> 
                 {{else}}
                     <li><a href="/auth/login">Iniciar sesión</a></li>
                     <li><a href="/auth/register">Registrarse</a></li>

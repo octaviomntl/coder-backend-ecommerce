@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const productsController = require('../controllers/products.controller');
 
+
 // Obtener todos los productos
 router.get('/', productsController.getAllProducts);
 
@@ -12,4 +13,3 @@ router.post('/add', productsController.addProduct);
 router.delete('/:productId', productsController.deleteProduct);
 
 module.exports = router;
-

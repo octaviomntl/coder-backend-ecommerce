@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('../config/passport');
-const User = require('../models/user.model');
+const User = require('../models/user.model'); 
 const bcrypt = require('bcrypt');
 
 // Ruta de inicio de sesión (GET)
@@ -13,8 +13,7 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/auth/login',
-    failureFlash: true,
-    successFlash: 'Has iniciado sesión con éxito'  
+    failureFlash: true
 }));
 
 // Ruta de registro (GET)
@@ -30,7 +29,7 @@ router.post('/register', async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         req.flash('error', 'El correo ya está registrado.');
-        return res.redirect('/auth/register');
+        return res.redirect('/register');
     }
 
     // Hashear la contraseña
@@ -46,7 +45,7 @@ router.post('/register', async (req, res) => {
 
     try {
         await newUser.save();
-        res.redirect('/auth/login'); // Redirigir a la página de inicio de sesión
+        res.redirect('/login'); // Redirigir a la página de inicio de sesión
     } catch (err) {
         console.error(err);
         res.status(500).send('Error al registrar usuario.');
@@ -54,15 +53,13 @@ router.post('/register', async (req, res) => {
 });
 
 // Ruta de logout
-router.get('/logout', (req, res) => {
-    req.logout(err => {
-      if (err) {
-        return next(err);
-      }
-      res.redirect('/auth/login');
+router.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/login');
     });
-  });
-  
-  module.exports = router;
+});
 
 module.exports = router;

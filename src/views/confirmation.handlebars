@@ -1,10 +1,20 @@
-<h1>Confirmación de Compra</h1>
-<p>Gracias por tu compra, {{user.name}}. Tu pedido ha sido recibido y está siendo procesado.</p>
-<p>Detalles del Pedido:</p>
-<ul>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de Compra</title>
+</head>
+<body>
+  <h1>Confirmación de Compra</h1>
+  <p>Gracias por tu compra, {{user.name}}. Tu pedido ha sido recibido y está siendo procesado.</p>
+  <p>Detalles del Pedido:</p>
+  <ul>
     {{#each order.items}}
-    <li>{{this.producto.nombre}} - Cantidad: {{this.quantity}} - Precio: {{this.total}}</li>
+    <li>{{this.product.name}} - Cantidad: {{this.quantity}} - Precio: {{this.total}}</li>
     {{/each}}
-</ul>
-<p>Total: {{order.total}}</p>
-<a href="/products">Seguir Comprando</a>
+  </ul>
+  <p>Total: {{order.total}}</p>
+  <a href="/products">Seguir Comprando</a>
+</body>
+</html>

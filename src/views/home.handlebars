@@ -1,10 +1,11 @@
 <h1>Bienvenido a nuestro Ecommerce</h1>
 {{#if user}}
     <p>Hola, {{user.name}}!</p>
-    <a href="/logout">Cerrar sesión</a>
+    <a href="/auth/logout">Cerrar sesión</a>
     <a href="/products">Ver productos</a> 
 {{else}}
     <a href="/login">Iniciar sesión</a>
     <a href="/register">Registrarse</a>
     <a href="/products">Ver productos</a> 
+    
 {{/if}}

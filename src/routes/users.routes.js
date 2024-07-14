@@ -3,11 +3,12 @@ const router = express.Router();
 const userController = require('../controllers/users.controller');
 const { isAdmin } = require('../middleware/authMiddleware');
 
-// Ruta para obtener todos los usuarios 
-router.get('/', isAdmin, userController.getAllUsers);
+// Ruta para obtener todos los usuarios
+router.get('/', userController.getAllUsers);
 
 // Ruta para eliminar usuarios inactivos
-router.delete('/', isAdmin, userController.deleteInactiveUsers);
+// router.delete('/', isAdmin, userController.deleteInactiveUsers);
+router.delete('/', userController.deleteInactiveUsers);
 
 // Ruta para actualizar rol de un usuario
 router.post('/:id', isAdmin, userController.updateUserRole);
