@@ -3,7 +3,8 @@ const router = express.Router();
 const Cart = require('../models/cart.model');
 const Product = require('../models/product.model');
 const { createOrder } = require('../controllers/order.controller'); 
-const { isLoggedIn } = require('../middleware/authMiddleware');
+const { isLoggedIn, isUser } = require('../middleware/authMiddleware');
+const cartsController = require('../controllers/carts.controller');
 
 // Ver carrito
 router.get('/', isLoggedIn, async (req, res) => {
@@ -15,6 +16,11 @@ router.get('/', isLoggedIn, async (req, res) => {
         res.status(500).send('Error al obtener el carrito.');
     }
 });
+
+
+router.post('/add', isUser, cartsController.addToCart);
+router.get('/', isUser, cartsController.getCart);
+
 
 // Añadir un producto al carrito
 router.post('/add', isLoggedIn, async (req, res) => {

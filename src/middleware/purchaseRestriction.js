@@ -1,17 +1,14 @@
-const Product = require('../models/product.model'); // Ajusta el path según tu estructura
+// src/middleware/purchaseRestriction.js
+const Product = require('../models/product.model');
 
 const purchaseRestriction = async (req, res, next) => {
   try {
     const user = req.user;
-    console.log(`Usuario intentando comprar: ${user._id}, Rol: ${user.role}`); // Log de usuario
-
     if (!user) {
-      console.log('Usuario no autenticado.');
       return res.status(401).send('Usuario no autenticado.');
     }
 
     if (user.role === 'admin') {
-      console.log('Compra denegada para administradores.');
       return res.status(403).send('Los administradores no pueden comprar productos.');
     }
 
@@ -20,18 +17,15 @@ const purchaseRestriction = async (req, res, next) => {
       return next();
     }
 
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).populate('owner');
     if (!product) {
-      console.log('Producto no encontrado.');
       return res.status(404).send('Producto no encontrado.');
     }
 
-    if (product.owner.toString() === user._id.toString()) {
-      console.log('Compra denegada para el dueño del producto.');
+    if (user.role === 'premium' && product.owner._id.toString() === user._id.toString()) {
       return res.status(403).send('No puedes comprar tu propio producto.');
     }
 
-    console.log('Compra permitida.');
     next();
   } catch (error) {
     console.error(error);

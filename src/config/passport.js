@@ -6,20 +6,18 @@ const bcrypt = require('bcrypt');
 // Estrategia Local
 passport.use(new LocalStrategy(
     {
-        usernameField: 'email',  // El campo del formulario de login que Passport usará como nombre de usuario
-        passwordField: 'password'  // El campo del formulario de login que Passport usará como contraseña
+        usernameField: 'email',  
+        passwordField: 'password'  
     },
     async (email, password, done) => {
         try {
-            // Buscar al usuario por el email
             const user = await User.findOne({ email });
 
-            // Si el usuario no existe, devolver un mensaje de error
             if (!user) {
-                return done(null, false, { message: 'Correo no registrado' });
+                return done(null, false, { message: 'Correo o contraseña incorrecto' });
             }
 
-            // Verificar la contraseña
+         
             const match = await bcrypt.compare(password, user.password);
 
             // Si la contraseña no es correcta, devolver un mensaje de error
@@ -27,10 +25,8 @@ passport.use(new LocalStrategy(
                 return done(null, false, { message: 'Contraseña incorrecta' });
             }
 
-            // Si el usuario existe y la contraseña es correcta, devolver el usuario
             return done(null, user);
         } catch (err) {
-            // Manejar errores
             return done(err);
         }
     }
@@ -48,7 +44,6 @@ passport.deserializeUser(async (id, done) => {
         const user = await User.findById(id);
         done(null, user);
     } catch (err) {
-        // Manejar errores
         done(err);
     }
 });

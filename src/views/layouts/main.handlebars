@@ -11,17 +11,25 @@
         <h1>Bienvenido {{#if user}}{{user.name}}{{else}}Invitado{{/if}}</h1>
         <nav>
             <ul>
-                <li><a href="/">Inicio</a></li>
-                <li><a href="/products">Productos</a></li>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/products">Productos</a></li>
+            {{#if currentUser}}
+                {{#ifCond currentUser.role '===' 'admin'}}
+                    <li><a href="/admin/dashboard">Dashboard</a></li>
+                {{/ifCond}}
+            {{/if}}
+            {{#if currentUser}}
+            <p>Rol del usuario: {{currentUser.role}}</p>
                 <li><a href="/cart">Carrito</a></li>
-                {{#if user}}
-                    <li><a href="/auth/logout">Cerrar sesión</a></li>
-                    <p>Rol: {{currentUser.role}}</p> 
-                {{else}}
-                    <li><a href="/auth/login">Iniciar sesión</a></li>
-                    <li><a href="/auth/register">Registrarse</a></li>
-                {{/if}}
-            </ul>
+                <li><a href="/orders">Órdenes</a></li>
+                <li><a href="/auth/logout">Salir</a></li>
+            {{else}}
+                <li><a href="/auth/login">Iniciar sesión</a></li>
+                <li><a href="/auth/register">Registrarse</a></li>
+            {{/if}}
+        </ul>
+    </nav>
+
         </nav>
     </header>
     <main>

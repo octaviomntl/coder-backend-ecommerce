@@ -11,7 +11,6 @@ const { isLoggedIn, isAdmin, isUser } = require('./src/middleware/authMiddleware
 const config = require('./src/config/variablesEntorno');
 const helpers = require('./src/helpers/handlebars-helpers');
 const methodOverride = require('method-override');
-const purchaseRestriction = require('./src/middleware/purchaseRestriction');
 
 
 const app = express();
@@ -54,6 +53,7 @@ app.use(session({
   }
 }));
 
+
 // Inicialización de Passport y sesión
 app.use(passport.initialize());
 app.use(passport.session());
@@ -63,21 +63,22 @@ app.use(flash());
 
 // Middleware para manejar datos del usuario en las vistas
 app.use((req, res, next) => {
-  res.locals.user = req.user;  
-  res.locals.successMessage = req.flash('success');  
-  res.locals.errorMessage = req.flash('error');  
+  res.locals.user = req.user;
+  res.locals.successMessage = req.flash('success');
+  res.locals.errorMessage = req.flash('error');
   next();
 });
 
+
 // Definir rutas
-app.use('/api/users', require('./src/routes/users.routes'));
 app.use('/auth', require('./src/routes/auth.routes'));
+app.use('/api/users', require('./src/routes/users.routes'));
 app.use('/admin', isAdmin, require('./src/routes/admin.routes'));
-app.use('/api/carts', isUser, isAdmin, require('./src/routes/carts.routes'));
-app.use('/products', isAdmin, require('./src/routes/products.routes'));
+app.use('/api/carts', isUser, require('./src/routes/carts.routes'));
+app.use('/products', isUser, require('./src/routes/products.routes'));
 app.use('/users', require('./src/routes/users.routes'));
-app.use('/cart', isUser, isAdmin, require('./src/routes/carts.routes'));
-app.use('/orders', isUser, isAdmin, require('./src/routes/orders.routes'));
+app.use('/cart', isUser,  require('./src/routes/carts.routes'));
+app.use('/orders', isUser, require('./src/routes/orders.routes'));
 
 // Ruta de inicio
 app.get('/', (req, res) => {
@@ -89,10 +90,11 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
-// Manejo de datos del usuario en las vistas
+// Middleware para manejar datos del usuario en las vistas
 app.use((req, res, next) => {
   res.locals.user = req.user;
-  res.locals.currentUser = req.session.currentUser;
+  res.locals.successMessage = req.flash('success');
+  res.locals.errorMessage = req.flash('error');
   next();
 });
 

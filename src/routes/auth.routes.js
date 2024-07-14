@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require('../config/passport');
 const User = require('../models/user.model'); 
 const bcrypt = require('bcrypt');
+const authController = require('../controllers/auth.controller');
 
 // Ruta de inicio de sesión (GET)
 router.get('/login', (req, res) => {
@@ -16,10 +17,11 @@ router.post('/login', passport.authenticate('local', {
     failureFlash: true
 }));
 
-// Ruta de registro (GET)
-router.get('/register', (req, res) => {
-    res.render('register');
-});
+// Ruta para el formulario de registro (GET)
+router.get('/register', authController.showRegisterForm);
+
+// Ruta para procesar el registro (POST)
+router.post('/register', authController.registerUser);
 
 // Ruta de registro (POST)
 router.post('/register', async (req, res) => {

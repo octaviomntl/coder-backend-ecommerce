@@ -16,9 +16,13 @@ router.get('/productManager', productsController.getAllProducts);
 // Ruta para el dashboard de administración
 router.get('/dashboard', isAdmin, adminController.getAdminDashboard);
 
-// Rutas para la gestión de usuarios
-router.get('/userManagement', adminController.getUserManagement);;
-router.post('/users/:userId/role', isAdmin, adminController.updateUserRole);
-router.post('/users/:userId', isAdmin, adminController.deleteUser);
+// Ruta para obtener la vista de gestión de usuarios
+router.get('/userManagement', adminController.getUserManagement);
+
+// Ruta para actualizar el rol de un usuario
+router.post('/users/:userId', adminController.updateUserRole);
+
+// Ruta para eliminar un usuario
+router.post('/users/:userId/delete', adminController.deleteUser);
 
 module.exports = router;

@@ -19,13 +19,11 @@
             {{#if owner}}
                 <p>Propietario: {{owner.name}}</p>
             {{/if}}
-            {{#ifCond ../currentUser.role '===' 'premium'}}
-                {{#ifCond ../currentUser._id '===' owner._id}}
-                    <form action="/products/delete/{{_id}}" method="POST">
-                        <button type="submit">Eliminar Producto</button>
-                    </form>
-                {{/ifCond}}
-            {{/ifCond}}
+            {{#if (and (eq ../currentUser.role 'premium') (eq ../currentUser._id owner._id))}}
+                <form action="/products/delete/{{_id}}" method="POST">
+                    <button type="submit">Eliminar Producto</button>
+                </form>
+            {{/if}}
             <form action="/cart/add" method="POST">
                 <input type="hidden" name="productId" value="{{_id}}">
                 <input type="number" name="quantity" value="1" min="1">

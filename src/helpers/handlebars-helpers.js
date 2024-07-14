@@ -40,3 +40,12 @@ module.exports = {
         }
     }
 };
+
+module.exports = {
+    eq: (a, b) => {
+      return a === b;
+    },
+    and: (a, b) => {
+        return a && b;
+      },
+};

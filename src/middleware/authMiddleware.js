@@ -1,3 +1,19 @@
+const User = require('../models/user.model');
+
+exports.getCurrentUser = async (req, res, next) => {
+  if (req.session && req.session.userId) {
+      try {
+          const currentUser = await User.findById(req.session.userId);
+          if (currentUser) {
+              req.currentUser = currentUser;
+          }
+      } catch (err) {
+          console.error('Error al obtener usuario actual:', err);
+      }
+  }
+  next();
+}
+
 // Middleware para verificar si el usuario está autenticado
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
